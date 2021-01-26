@@ -341,6 +341,195 @@ So there are '5 basic SQL statements'. Seems simple enough.
 Module 3
 --------
 
+### Using sting patterns and ranges ###
+
+Using the `SELECT` statement
+
+Apparently these are 'advanced' techniques. Does that mean I can call myself an 'intermediate' user after I've learnt them?
+
+Lesson: simplifying select staements by using tring patterns, ranges or sets of values.
+
+The simplest select stateemnt is:
+
+```{sql}
+SELECT * FROM table_name
+```
+
+This will retrieve an entire table, and all of its contents
+
+What if we don't know the exact details of the value we're interested in?
+
+What if we can only remember the first name of the author, of the book we want?
+
+So we can use wildcards (regex) - which appears totally different from most other languages, which is probalby why it's called wildcard, instead of regex - in fact it probably is different.
+
+```{sql}
+
+SELECT firstname, title FROM BookTable WHERE firstname LIKE 'R%';
+
+-- or something to that effect
+
+```
+
+So there are SQL tricks which simplify the code. That's pretty cool.
+
+So instead of:
+
+```{sql}
+
+select title, pages from book
+  where pages >=290 and pages <= 300;
+
+```
+
+We can do:
+
+```{sql}
+
+SELECT title, pages FROM Book
+  WHERE pages BETWEEN 290 AND 300;
+
+```
+
+Which countries are the authors from?
+
+So we could do:
+
+```{sql}
+
+SELECT firstname, lastname, country FROM Author
+  WHERE country='AU' OR country='BR';
+
+```
+
+But this can quickly become laborious if we want to list several countries.
+
+So we can use the 'IN' operator like so:
+
+```{sql}
+
+SELECT firstname, lastname, country FROM Author
+  WHERE country IN ('AU','BR');
+
+```
+
+Which is still going to be pretty laborious if you ask me.
+
+### Sorting: SORT BY ###
+
+Add order by to the select statement
+
+```{sql}
+
+SELECT title FROM book
+  ORDER BY title;
+
+```
+
+```{sql}
+
+SELECT title FROM book
+  ORDER BY title DESC; -- in descending order
+
+```
+
+```{sql}
+
+SELECT title FROM book
+  ORDER BY 2; -- order by column two
+
+```
+
+### Grouping ###
+
+sorting and grouping how the results display
+
+- how to eliminate duplicates
+  - and further reduce results
+
+```{sql}
+
+SELECT country FROM Author
+  ORDER BY 1;
+
+```
+
+This lists all countries, from all authors. However, when two authors come foerm the same country you will get duplicates. We only really need to know which countries the authors come from, so we can simplify:
+
+```{sql}
+
+SELECT distinct(country) FROM Author;
+
+```
+
+This removes duplicates
+
+OK, now we're getting a little bit more technical. What about when we want to know how many authors come from each country (which from what I remember in R, is not actually that simple - it requires at least the use of pipes in tidyr, or one of Hadley's other wizarding packages.
+
+```{sql}
+
+SELECT country, count(country) 
+  FROM Author GROUP BY country;
+
+```
+
+Also, very readable syntax right? Almost as if it was designed for database administrators who aren't sofware developers!
+
+We can also further restrict rows:
+
+We check if there are more than, say, 4 authors in a given country.
+
+The `HAVING` clause works *only* with the `GROUP BY` clause!
+
+```{sql}
+
+SELECT country, count(country) 
+  AS COUNT FROM Author 
+  GROUP BY country
+  HAVING count(country) > 4;
+
+```
+
+OK sweet, this lab looks really helpful. Learn how to create multiple table simultaneously, pull results and group sets.
+
+Also loading data into tables from csv files!! (awesome).
+
+NOTE: Can I pause the course after this lab, and update some notes in the music databse
+  - come up with a plan to start consolidating music into tables - create multiple tables at the same time, and pulling out metadata into csv files?
+  - still think it would cool to write some python that pulled the metadata and inserted it into my SQL tables
+
+OK, looks like there will be a lot o hand holding in this prac - pre written create tables etc.
+
+But will be cool to see how to load data into the tables
+  - this means that if I can get my Music info into a csv file, I can create my tables that way, which would be a fast easy way to do it?
+
+OK, so I learned the point and click way of loading data into a table on the IBM Db2 database server.
+
+Obviously there's a process for doing the same thing on the command line, on my own database here.
+
+
+    Department.csv
+    Employees.csv
+    Job_History.csv
+    Jobs.csv
+    Location.csv
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
