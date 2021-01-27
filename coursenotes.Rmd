@@ -483,8 +483,8 @@ The `HAVING` clause works *only* with the `GROUP BY` clause!
 
 ```{sql}
 
-SELECT country, count(country) 
-  AS COUNT FROM Author 
+SELECT country, count(country) AS COUNT 
+  FROM Author 
   GROUP BY country
   HAVING count(country) > 4;
 
@@ -507,53 +507,75 @@ OK, so I learned the point and click way of loading data into a table on the IBM
 
 Obviously there's a process for doing the same thing on the command line, on my own database here.
 
-
     Department.csv
     Employees.csv
     Job_History.csv
     Jobs.csv
     Location.csv
 
+Module 4
+--------
 
+### Built-in database functions ###
 
+Allow you to perform operations on the data from within the database - reducing download and bandwith requirements, and making the process more efficient.
 
+You can also write your own database functions - but that's for later.
 
+OK, so we've already used `count()` which is a built-in function
 
+So is `avg()`
 
+```{sql}
+SUM()
+AVG()
+ROUND()
+-- WE CAN ALSO PERFORM OPERATIONS, AND APPLY A FUNCTION TO THE OUTPUT
+AVG(COST/QUANTITY)
+-- THERE ARE ALSO STRING FUNCTIONS THAT OPERATE ON STRINGS
+LENGTH() -- COUNTS THE NUMBER OF CHARACTERS IN EACH ELEMENT AND RETURNS THE VALUE
+UCASE()
+LCASE()
+-- can also nest functions within functions
+ROUND(AVG())
 
+```
 
+### Date and Time builtins ###
 
+Lost of interesting date and time functions.
 
+```{sql}
 
+DATE()
+TIME()
+TIMESTAMP()
 
+YEAR()
+MONTH()
+DAY()
+DAYOFMONTH()
+DAYOFYEAR()
+WEEK()
+HOUR()
+MINUTE()
+SECOND()
 
+```
 
+```{sql}
 
+SELECT COUNT(*) FROM PETRESCUE
+  WHERE MONTH(RESCUEDATE) = '05'
 
+SELECT (RESCUEDATE + 3 DAYS) FROM PETRESCUE
 
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{sql}
+CURRENT_DATE
+CURRENT_TIME
+```
 
 
 
