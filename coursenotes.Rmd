@@ -577,6 +577,43 @@ CURRENT_DATE
 CURRENT_TIME
 ```
 
+### Sub queriesa and nested selects ###
+
+Regular queries, but nested inside another query in parentheses.
+
+```{sql}
+
+SELECT COLUMN1 FROM TABLE
+  WHERE COLUMN2 = (SELECT MAX(COLUMN2) FROM TABLE);
+
+```
+
+say we want those who earn > the average salary.
+
+```{sql}
+
+SELECT EMP_ID, F_NAME, L_NAME, SALARY 
+  FROM EMPLOYEES 
+    WHERE SALARY < 
+      (SELECT AVG (SALARY)
+
+```
+
+```{sql}
+SELECT EMP_ID, SALARY, 
+  (SELECT AVG(SALARY) FROM EMPLOYEES) 
+  AS AVG_SALARY
+  FROM EMPLOYEES;
+```
+
+Using a sub query in the `FROM` clause is often referred to as a derived table, or table expression.
+
+```{sql}
+SELECT * 
+  FROM (SELECT EMP_ID, F_NAME, L_NAME, DEP_ID FROM EMPLOYEES) 
+  AS EMP4ALL;
+```
+
 
 
 
