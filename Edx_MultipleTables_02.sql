@@ -1,0 +1,1 @@
+select EMP_ID, SALARY, ( select AVG(SALARY) from employees ) AS AVG_SALARY from employees;

@@ -1,0 +1,1 @@
+select * from employees, departments; -- specify two tables in the from clause - pretty simple stuff
