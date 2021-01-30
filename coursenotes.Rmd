@@ -318,10 +318,10 @@ Multiple rows can be inserted at once.
 INSERT INTO AUTHOR
 (AUTHOR_ID, LASTNAME, FIRSTNAME, EMAIL, CITY, COUNTRY)
 VALUES 
-('A1', 'Chong', 'Raul', 'rfc@ibm.com', 'Toronto', 'CA')
-('A1', 'Ajhuv', 'Tim', 'AT@ibm.com', 'Toronto', 'CA')
-('A1', 'Johnson', 'Paul', 'PJ@ibm.com', 'Toronto', 'CA')
-('A1', 'Chong', 'Rick', 'RC@ibm.com', 'Miami', 'FL')
+('A1', 'Chong', 'Raul', 'rfc@ibm.com', 'Toronto', 'CA'),
+('A1', 'Ajhuv', 'Tim', 'AT@ibm.com', 'Toronto', 'CA'),
+('A1', 'Johnson', 'Paul', 'PJ@ibm.com', 'Toronto', 'CA'),
+('A1', 'Chong', 'Rick', 'RC@ibm.com', 'Miami', 'FL');
 ```
 
 ### UPDATE and DELETE statements ###
@@ -683,7 +683,7 @@ SELECT E.EMP_ID, D.DEP_NAME FROM EMPLOYEES E, DEPARTMENTS D
 Module 5
 --------
 
-Accessing Databases using python - *cool*
+### Accessing Databases using python - *cool* ###
 
 > After completing the lessons in Module 5, you will know how to explain the basic concepts related to using Jupyter notebooks to connect to databases and then create tables, load data, query data using SQL and analyze data using Python.
 
@@ -727,12 +727,19 @@ OK, I'm just going to copy/paste this video, cuz there's heaps of interesting an
 > Notebooks can be shared with others by email, Dropbox, GitHub, and the Jupyter notebook viewer.
 > Your code can produce rich interactive output HTML, images, videos, LaTex, and customized types.
 > You can leverage big data tools such as Apache Spark from Python, R, and Scala, and explore that same data with pandas, scikit-learn, ggplot2, and TensorFlow.
+
 > This is how a typical user accesses databases using Python code written on a Jupyter notebook, a web based editor.
 > There is a mechanism by which the Python program communicates with the DBMS.
 > The Python code connects to the database using API calls.
 
+Python notebooks in a browser - connect to dbms. Pretty simple stuff.
+
 > We will explain the basics of SQL APIs and Python DB APIs.
 > An application programming interface is a set of functions that you can call to get access to some type of service.
+
+Cool, so like - Application Programming Interfaces (APIs) are functions that allow you to interface with twitter, and other web apps
+  - so, if you were building a website - there would simple, pre-written functions that you can use to create share buttons, connect with twitter, send tweets, etc.
+
 > The SQL API consists of library function calls as an application programming interface, API, for the DBMS.
 > To pass SQL statements to the DBMS, an application program calls functions in the API, and it calls other functions to retrieve query results and status information from the DBMS.
 > The basic operation of a typical SQL API is illustrated in the figure.
@@ -742,6 +749,11 @@ OK, I'm just going to copy/paste this video, cuz there's heaps of interesting an
 > The application program makes API calls to check the status of its DBMS request and to handle errors.
 > The application program ends its database access with an API call that disconnects it from the database.
 > Now, lets learn basic concepts about some of the proprietary APIs used by popular SQL-based DBMS systems.
+
+OK, so there's obviously a way to write python scripts on my computer which
+  - connect to a database I've created on my machine
+  - send SQL queries as strings to the database
+  - retrieve the results
 
 > Each database system has its own library.
 > As you can see, the table shows a list of a few applications and corresponding SQL APIs.
@@ -761,6 +773,230 @@ OK, I'm just going to copy/paste this video, cuz there's heaps of interesting an
 - ODBC -- Microsoft Windows OS
 - OCI -- Oracle
 - JDBC -- Java
+
+[//]: # ( I look forward to understanding what the outcome is of an 'introduction to SQL for Data Science' course )
+[//]: # ( NOTE, if someone was doing a full Data Science course - this might be all the introduction they get to SQL! )
+
+### Writing code using DB API ###
+
+Use Python programs in jupyter
+
+DB API - pythons standard API for accessing relational databases
+
+> So, if you learn the DB-API functions,
+> then you can apply that knowledge to use any database with Python.
+
+Here are some advantages of using the DB-API:
+
+- It's easy to implement and understand
+- Encourage similarity between the Python modules that are used to access databases
+- Achieves consistency
+- generally more portable across databases
+- Broader reach of database connectivity from Python
+
+Each database systems has its own library
+
+Connection obects
+
+- database connections
+- manage transactions
+
+Query objects
+
+- database queries
+- scroll through results set
+- retrieve results
+
+Connection methods?
+
+`.cursor()`
+`.commit()`
+`.rollback()`
+`.close()`
+
+The cursor() method, which returns a new cursor object using the connection.
+The commit() method, which is used to commit any pending transaction to the database.
+The rollback() method, which causes the database to roll back to the start of any pending transaction.
+The close() method, which is used to close a database connection.
+
+Wow lots of mumbo jumbo really quickly.
+
+- So basically, there are a few standard API's - which amount to program functions, which are fairly standardised and allow you to connect to multiple databses using python.
+
+- These API's connect to databases, manage the handling of querys and query results, and then close the connection.
+
+### Connecting to a Database Using ibm db API ###
+
+Example:
+
+```{python}
+# Create database connection
+
+dsn = (
+  "DRIVER=((IBM DB2 ODBC DRIVER));"
+  "DATABASE={0};"
+  "HOSTNAME={1};"
+  "PORT={2};"
+  "PROTOCOL=TCPIP;"
+  "UID={3};"
+  "PWD={4};").format(dsn_database, dsn_hostname, dsn_port, dsn_uid, dsn_uid, dsn_pwd) # connection credentials ('parameters'?)
+
+try:
+  conn = ibm_db.connect(dsn, "", "") # create connection object 'conn'
+  print ("connected")
+
+except:
+  print ("Unable to connect to database")
+
+# When closing
+
+ibm_db.close(conn) # close connection 'conn'
+
+```
+
+Cool.
+
+### Lab - Setting up new service credentials ###
+
+I already have some credentials - can I not use them?
+
+Anyway.
+
+NOTE: -- you apparenlty have jupyter installed (with Anaconda) - but doesn't automatically run on the command line (maybe it's not in my `$path`?)
+
+Not necessary for the lab. Something to work out later.
+
+OK, I couldn't help myself. Found it, and added it to my $PATH
+
+```{sh}
+jupyter notebook #invoking on the command line opens up a browser tab of my home directory! CoOl. Anaconda might acutally be useful afterall.
+```
+
+OK, back to the lab.
+
+### Creating Tables, Loading Data, Querying Data ###
+
+Using python
+
+Do an example
+
+Using Db2
+
+So I should be able to do all the exact same things I'm doing here from a conda environment.
+
+  - So, I should get familiar with anaconda, and use it to create my Music Database (and possibly use it to connect to IBM Db2?)
+  - Might be a fun thing to do after this course - repeat the course from my own computer in a conda environment
+
+```{python}
+
+# Code to create the table
+stmt = ibm_db.exec_immediate(conn,
+"""CREATE TABLE Trucks(serial_no VARCHAR(20) PRIMARY KEY NOT NULL,
+model VARCHAR(20) NOT NULL,
+manufacturer VARCHAR(20) NOT NULL,
+Engine_size VARCHAR(20) NOT NULL,
+Truck_Class VARCHAR(20) NOT NULL) """
+)
+
+```
+
+```{python}
+
+# Code to insert data
+stmt = ibm_db.exec_immediate(conn,
+"""INSERT INTO Trucks(serial_no,model,manufacturer,Engine_size,Truck_Class)
+VALUES('A1234','Lonestar','International Trucks','Cummins ISX15','Class 8');
+"""
+)
+
+# Code to insert data 2
+stmt = ibm_db.exec_immediate(conn,
+"""INSERT INTO Trucks(serial_no,model,manufacturer,Engine_size,Truck_Class)
+VALUES('B1235','Lonestar','International Trucks','Cummins ISX15','Class 8');
+"""
+)
+
+# Code to insert data 3
+stmt = ibm_db.exec_immediate(conn,
+"""INSERT INTO Trucks(serial_no,model,manufacturer,Engine_size,Truck_Class)
+VALUES('C2234','Kenworth','National Trucks','Caterpillar C9','Class 8');
+"""
+)
+
+```
+
+```{python}
+
+# Code to query data
+stmt = ibm_db.exec_immediate(conn, "SELECT * FROM Trucks")
+
+ibm_db.fetch_both(stmt)
+
+```
+
+Surely there's a way to just use python to access a SQL script and use that, so you don't have to hardcode all of your queries as strings in your code???
+
+```{python}
+
+# Using Pandas
+import pandas
+import ibm_db_dbi
+pconn = ibm_db_dbi.Connection(conn)
+df = pandas.read_sql(conn, "SELECT * FROM Trucks")
+df
+
+# Nicer
+
+```
+
+After you've installed the sql magic extension `ipython-sql`, you can use syntax sugar like `%` to enormously simplify your SQL/python interfacing.
+
+For example below, using two `%%` at the beginning of the code block, treats the whole block as SQL. Pretty neat.
+
+```{python)
+%%sql
+
+create table TABLE1 (
+col1 integer primary key not null,
+col2 varchar(10) not null,
+col3 date
+);
+
+```
+
+You can also use `:` to use python variables in your SQL.
+
+Can also insert a SQL query into a python variable:
+
+```{python}
+SomeQuery = %sql SELECT * FROM TABLE1
+SomeQuery
+```
+
+Can also convert SQL query results into dataframes:
+
+```{python}
+dataframe = test_score_distribution.DataFrame()
+
+%matplotlib inline
+# uncomment the following line if you get an module error saying seaborn not found
+# !pip install seaborn
+import seaborn
+
+plot = seaborn.barplot(x='Test Score',y='Frequency', data=dataframe)
+```
+
+On the jupyter notebook, the above made a pretty plot - obviously won't work here.
+
+### Analysing data with python ###
+
+
+
+
+
+
+
+
 
 
 
