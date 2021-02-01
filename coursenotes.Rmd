@@ -532,6 +532,7 @@ AVG()
 ROUND()
 -- WE CAN ALSO PERFORM OPERATIONS, AND APPLY A FUNCTION TO THE OUTPUT
 AVG(COST/QUANTITY)
+REPLACE() -- for customising the output - i.e. replace(column_name, 'before', 'after')
 -- THERE ARE ALSO STRING FUNCTIONS THAT OPERATE ON STRINGS
 LENGTH() -- COUNTS THE NUMBER OF CHARACTERS IN EACH ELEMENT AND RETURNS THE VALUE
 UCASE()
@@ -990,7 +991,62 @@ On the jupyter notebook, the above made a pretty plot - obviously won't work her
 
 ### Analysing data with python ###
 
+Most of this module was completed in jupyter notebooks.
 
+Module 6
+--------
+
+### Working with real world datasets ###
+
+SQL assumes all uppercase by default. When working with mixed case tables and table names, enclose the strings in double quotes.
+
+Databases often map spaces and other special characters to underscores by default also.
+
+`\` is used as an escape character in python. especially helpful when embedding SQL queries as objects
+
+```{python}
+
+selectQuery = 'select * from dogs where "Name_Of_Dog"=\'Huggy\' '
+
+```
+
+You can limit data in a query (like using `head`) like so:
+
+```{sql}
+SELECT * FROM census_data LIMIT 10;
+```
+
+### Getting table and column details ###
+
+list of tables:
+
+DB2: syscat tables
+SQL Server: information schema tables
+Oracle: all tables OR user tables
+
+
+
+```{sql}
+SELECT TABSCHEMA, TABNAME, CREATE_TIME 
+  FROM syscat.tables
+  WHERE tabschema = 'ABC12345' -- Replace ABC12345 with your Db2 username
+
+SELECT * FROM syscat.tables -- retrieves all information for all tables
+
+```
+
+Finding columns info for a given table
+
+```{sql}
+SELECT * FROM syscat.columns
+  WHERE TABNAME = 'dogs';
+```
+
+More info:
+
+> or you may want to know specific properties like the datatype
+and length of the datatype.
+> In DB2, you can issue a statement like, `select distinct_name, coltype, length from sysibm, syscolumns where tbname = dogs;`
 
 
 
