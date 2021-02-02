@@ -1048,6 +1048,105 @@ More info:
 and length of the datatype.
 > In DB2, you can issue a statement like, `select distinct_name, coltype, length from sysibm, syscolumns where tbname = dogs;`
 
+Optional Module - Joins
+-----------------------
+
+JOIN operator
+
+primary keys and foreign keys
+
+Which columns link two tables?
+
+```{sql}
+INNER JOIN
+OUTER JOIN
+LEFT OUTER JOIN
+RIGHT OUTER JOIN
+FULL OUTER JOIN
+```
+
+### INNER JOINS ###
+
+Join two tables:
+
+```{sql}
+SELECT B.BORROWER_ID, B.LASTNAME, B.COUNTRY,
+  L.BORROWER_ID, L.LOAN_DATE
+FROM BORROWER B INNER JOIN LOAN L
+  ON B.BORROWER_ID = L.BORROWER_ID;
+```
+
+Join three tables:
+
+```{sql}
+SELECT B.LASTNAME, L.COPY_ID, C.STATUS,
+FROM BORROWER B
+  INNER JOIN LOAN L ON B.BORROWER_ID=L.BORROWER_ID
+  INNER JOIN COPY C ON L.COPY_ID=C.COPY_ID
+```
+
+### LEFT OUTER JOIN ###
+
+An outer join
+
+- left
+- right
+- full
+
+So the terms refer to the tables to the left and the right.
+
+Pretty straightforward.
+
+A left join matches all rows from table 1, and the rows from table 2 which match query conditions.
+
+Obviously, the first table is the 'left' table (oriented left, in the query statement), and the 'right' is the second table.
+
+```{sql}
+SELECT B.BORROWER_ID, B.LASTNAME, B.COUNTRY,
+  L.BORROWER_ID, L.LOAN_DATE
+FROM BORROWER B LEFT JOIN LOAN L
+  ON B.BORROWER_ID = L.BORROWER_ID;
+```
+
+> The Left Join selects each borrower ID in the borrower table and displays the loan date from the loan table.
+> And here is the result set.
+> The result set shows each Borrower ID from the borrower table, and the loan date for that borrower.
+> Notice there is a loan date for the first five rows: D1-D5.
+> However, for the last three rows, the borrow ID and loan date show null values.
+
+So R does the same thing, in a slightly more obscure way.
+
+In R, you 'merge' tables, and in the function arguments you specify `all.y = T/F and/or all.x = T/F` which achieves essentially the same thing.
+
+### RIGHT OUTER JOIN ###
+
+```{sql}
+SELECT B.BORROWER_ID, B.LASTNAME, B.COUNTRY,
+  L.BORROWER_ID, L.LOAN_DATE
+FROM BORROWER B RIGHT JOIN LOAN L
+  ON B.BORROWER_ID = L.BORROWER_ID;
+```
+
+Same as left outer join, but takes the full infro from the right table, instead of the left, i.e. the LOAN table on the 'right' side of the query.
+
+### FULL JOIN ###
+
+```{sql}
+SELECT B.BORROWER_ID, B.LASTNAME, B.COUNTRY,
+  L.BORROWER_ID, L.LOAN_DATE
+FROM BORROWER B FULL JOIN LOAN L
+  ON B.BORROWER_ID = L.BORROWER_ID;
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
